@@ -7,7 +7,6 @@ import { jwt } from 'hono/jwt'
 import { logger } from 'hono/logger'
 import type { ContentfulStatusCode } from 'hono/utils/http-status'
 import { authContextMiddleware } from './middleware/auth'
-import { basicAuthMiddleware } from './middleware/basic-auth'
 import { diMiddleware } from './middleware/di'
 import { protectedAuthRoutes, publicAuthRoutes } from './routes/auth'
 import { customerRoutes } from './routes/customers'
@@ -21,7 +20,7 @@ export const app = new Hono<HonoEnv>()
     if (isMyAppError(err)) {
       return c.json({ message: err.message }, err.status as ContentfulStatusCode)
     }
-    // Hono の HTTPException（Basic 認証 401 等は res に WWW-Authenticate を含む）
+    // Hono の HTTPException
     if (err instanceof HTTPException) {
       return err.getResponse()
     }
@@ -61,8 +60,7 @@ export const app = new Hono<HonoEnv>()
   .route('/api/shops', shopListRoutes)
   .route('/api/tenants', tenantShopRoutes)
 
-  // /login のみ Basic 認証（SPA エントリ）
-  .use('/login', basicAuthMiddleware())
+  // /login（SPA エントリ）
   .get('/login', async (c) => {
     const indexRequest = new Request(new URL('/', c.req.url), c.req.raw)
     try {

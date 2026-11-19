@@ -13,20 +13,20 @@
   "observability": { "enabled": true },
   "upload_source_maps": true,
 
-  // D1 Database
-  // Run `wrangler d1 create authz-sandbox` to get a real database_id for production
+  // D1 Database（ローカル用。リモート本番 DB / Worker は削除済み — 再デプロイしない）
+  // リモートにデプロイする場合は `wrangler d1 create authz-sandbox` で database_id を取得して差し替え
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "authz-sandbox",
-      "database_id": "35bcad1f-c026-447a-93ce-964fd5ba4742",
+      "database_id": "00000000-0000-0000-0000-000000000000",
       "migrations_dir": "worker/rdb/migrations"
     }
   ],
 
-  // JWT_SECRET / BASIC_AUTH_* は .dev.vars（ローカル）または wrangler secret put（本番）で注入
+  // JWT_SECRET は .dev.vars（ローカル）で注入
   "secrets": {
-    "required": ["JWT_SECRET", "BASIC_AUTH_USERNAME", "BASIC_AUTH_PASSWORD"]
+    "required": ["JWT_SECRET"]
   },
 
   // E2E は vitest の bindings で SEED_CUSTOMER_COUNT を上書きして短時間に抑える

@@ -36,13 +36,13 @@ CI では `pnpm install --frozen-lockfile` を使い、ロックファイルと 
 
 ## 環境変数（ローカル）
 
-`wrangler.jsonc` で `JWT_SECRET`・`BASIC_AUTH_USERNAME`・`BASIC_AUTH_PASSWORD` が必須シークレットとして定義されています。ローカルでは `.dev.vars.sample` をコピーして `.dev.vars` を作成し、値を設定してください（`.dev.vars` は `.gitignore` 対象）。
+`wrangler.jsonc` で `JWT_SECRET` が必須シークレットとして定義されています。ローカルでは `.dev.vars.sample` をコピーして `.dev.vars` を作成し、値を設定してください（`.dev.vars` は `.gitignore` 対象）。
 
 ```bash
 cp .dev.vars.sample .dev.vars
 ```
 
-本番環境では `wrangler secret put JWT_SECRET` 等で設定してください。
+公開デモ（Worker / リモート D1）は削除済みです。再デプロイは想定していません。
 
 ## pnpm スクリプト（`package.json` と同期）
 
@@ -97,7 +97,7 @@ cp .dev.vars.sample .dev.vars
 - **Worker エントリ**: `worker/index.ts` → `worker/app.ts`
 - **静的アセット**: ビルド出力 `dist/client`（Wrangler の `assets`）
 - **`/api/*`**: アセットより先に Worker が処理（`run_worker_first`）
-- **D1**: `wrangler.jsonc` の `d1_databases`（開発用の `database_id` プレースホルダあり。本番では `wrangler d1 create` 等で取得した ID に差し替え）
+- **D1**: `wrangler.jsonc` の `d1_databases`（ローカル用。リモート本番 DB は削除済み）
 
 ## パスエイリアス（Vite）
 
